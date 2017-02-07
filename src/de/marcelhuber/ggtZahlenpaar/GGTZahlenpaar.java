@@ -46,13 +46,13 @@ public class GGTZahlenpaar {
     public static void main(String[] args) {
         GGTZahlenpaar zahlenPaar = new GGTZahlenpaar(-21, -15);
         if (!zahlenPaar.getValueOfeuclidCalculated()) {
-            System.out.println("Das Objekt wurde noch nicht mit dem euklidischen"
-                    + "Algorithmus behandelt!");
+            System.out.println("!!!Das Objekt wurde noch nicht mit dem "
+                    + "euklidischen Algorithmus behandelt!!!\n");
         }
         zahlenPaar.goCreateGGTObject(zahlenPaar);
           if (zahlenPaar.getValueOfeuclidCalculated()) 
-            System.out.println("Das Objekt wurde nun mit dem euklidischen"
-                    + "Algorithmus behandelt!");
+            System.out.println("\nDas Objekt wurde nun mit dem euklidischen"
+                    + "Algorithmus behandelt!!");
     }
 
     void goCreateGGTObject(GGTZahlenpaar zahlenPaar) {
