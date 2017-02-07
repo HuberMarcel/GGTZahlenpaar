@@ -18,30 +18,39 @@ public class GGTZahlenpaar {
     // z1 und z2 sind (in dem Sinn ist das Wort "Paar" oben zu verstehen), um 
     // dann auf diesen Objekten den Erweiterten Euklidischen Algorithmus für 
     // diese anzuwerfen, um die anderen 3 Attribute sinnvoll zu füllen
-    int z1, z2;
-    int x1 = 1, y1 = 0, ggT;
+    int z1, z2;      // die zwei Zahlen, von denen der ggT berechnet werden soll
+    int x1, y1, ggT; // Ergebnisse der Berechnung
+    boolean euclidCalculated = false;
 
     GGTZahlenpaar() {
-        z1 = 18;
-        z2 = 24;
+        this(0);
         System.out.println("Für ein zahlenfreies Objekt benutzen wir "
-                + "automatisch zur Demonstration die Beispielzahlen " + z1
+                + "automatisch Initialisierung mit den Zahlen " + z1
                 + " und " + z2);
     }
 
     GGTZahlenpaar(int a) {
-        z1 = a;
-        z2 = a;
+        this(a, a);
     }
 
     GGTZahlenpaar(int a, int b) {
-        this.z1 = a;
-        this.z2 = b;
+        z1 = a;
+        z2 = b;
+        x1 = 1;
+        y1 = 0;
+        ggT = 0;
     }
 
     public static void main(String[] args) {
-        GGTZahlenpaar zahlenPaar = new GGTZahlenpaar(-9, -12);
+        GGTZahlenpaar zahlenPaar = new GGTZahlenpaar(-21, -15);
+        if (!zahlenPaar.getValueOfeuclidCalculated()) {
+            System.out.println("Das Objekt wurde noch nicht mit dem euklidischen"
+                    + "Algorithmus behandelt!");
+        }
         zahlenPaar.goCreateGGTObject(zahlenPaar);
+          if (zahlenPaar.getValueOfeuclidCalculated()) 
+            System.out.println("Das Objekt wurde nun mit dem euklidischen"
+                    + "Algorithmus behandelt!");
     }
 
     void goCreateGGTObject(GGTZahlenpaar zahlenPaar) {
@@ -75,9 +84,10 @@ public class GGTZahlenpaar {
         int m2 = ausgabefeld[1] * z2;
 
         String M2 = zahlenPaar.negint2String(m2);
+        String AF1 = zahlenPaar.negint2String(ausgabefeld[1]);
 
         System.out.println("Es gilt " + ausgabefeld[0] + " * " + Z1 + " + "
-                + ausgabefeld[1] + " * " + Z2 + " = " + m1 + " + " + M2
+                + AF1 + " * " + Z2 + " = " + m1 + " + " + M2
                 + " = ggT(" + z1 + ", " + z2 + ") = " + ausgabefeld[2] + ".");
         System.out.println("\nOriginalwerte: ");
         System.out.print("x1 = " + zahlenPaar.getValueOfx1());
@@ -90,6 +100,7 @@ public class GGTZahlenpaar {
      * @param args the command line arguments
      */
     public int[] calculatorErweiterterEuklidischerAlgorithmus() {
+        euclidCalculated = true;
         int a = z1;
         int b = z2;
         int tauschHelfer;
@@ -101,26 +112,31 @@ public class GGTZahlenpaar {
         xVorf[1] = 0;
         yVorf[0] = 0;
         yVorf[1] = 1;
-        while (!(a % b == 0)) {
-            q = a / b;
-            tauschHelfer = b;
-            b = a % b;
-            a = tauschHelfer;
-            tauschHelfer = xVorf[1];
-            xVorf[1] = xVorf[0] - q * xVorf[1];
-            xVorf[0] = tauschHelfer;
-            tauschHelfer = yVorf[1];
-            yVorf[1] = yVorf[0] - q * yVorf[1];
-            yVorf[0] = tauschHelfer;
+        ggT = a;
+        rueckgabefeld[0] = xVorf[0];
+        rueckgabefeld[1] = yVorf[0];
+        if (b != 0) {
+            while (!(a % b == 0)) {
+                q = a / b;
+                tauschHelfer = b;
+                b = a % b;
+                a = tauschHelfer;
+                tauschHelfer = xVorf[1];
+                xVorf[1] = xVorf[0] - q * xVorf[1];
+                xVorf[0] = tauschHelfer;
+                tauschHelfer = yVorf[1];
+                yVorf[1] = yVorf[0] - q * yVorf[1];
+                yVorf[0] = tauschHelfer;
+            }
+            ggT = b;
+            rueckgabefeld[0] = xVorf[1];
+            rueckgabefeld[1] = yVorf[1];
         }
 
-        rueckgabefeld[0] = xVorf[1];
-        rueckgabefeld[1] = yVorf[1];
-        rueckgabefeld[2] = b;
+        rueckgabefeld[2] = ggT;
 
         x1 = xVorf[1];
         y1 = yVorf[1];
-        ggT = b;
         return rueckgabefeld;
     }
 
@@ -152,5 +168,9 @@ public class GGTZahlenpaar {
 
     int getValueOfggT() {
         return ggT;
+    }
+
+    boolean getValueOfeuclidCalculated() {
+        return euclidCalculated;
     }
 }
